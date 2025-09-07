@@ -257,6 +257,17 @@ export default function AuthorizationTab() {
         //   - value: 送信額 (parseFloat(amount) - 数値をそのまま渡すだけ！)
         //   - validAfter, validBefore, nonce, v, r, s: 署名データ
         // 完成版は ../react-sdk/AuthorizationTab.tsx を参照してください
+        await transferWithAuthorization({
+          from: address,
+          to: toAddress as AddressString,
+          value: parseFloat(amount), // 例: 100 → 内部で 100 * 10^18 に変換される
+          validAfter: signature.validAfter as any, // Uint256型に変換
+          validBefore: signature.validBefore as any, // Uint256型に変換
+          nonce: signature.nonce as any, // Bytes32型に変換
+          v: signature.v as any, // Uint8型に変換
+          r: signature.r as any, // Bytes32型に変換
+          s: signature.s as any  // Bytes32型に変換
+        });
 
       } else if (activeMode === 'receive' && signature && receiveWithAuthorization) {
         // TODO：receiveWithAuthorization関数を呼び出して受取承認実行しよう！
@@ -267,7 +278,18 @@ export default function AuthorizationTab() {
         //   - value: 送信額 (parseFloat(amount))
         //   - validAfter, validBefore, nonce, v, r, s: 署名データ
         // 完成版は ../react-sdk/AuthorizationTab.tsx を参照してください
-        
+        await receiveWithAuthorization({
+          from: originalFromAddress as AddressString, // 署名時の送信者アドレスを使用
+          to: address,
+          value: parseFloat(amount), // React SDKは数値をそのまま渡す
+          validAfter: signature.validAfter as any, // Uint256型に変換
+          validBefore: signature.validBefore as any, // Uint256型に変換
+          nonce: signature.nonce as any, // Bytes32型に変換
+          v: signature.v as any, // Uint8型に変換
+          r: signature.r as any, // Bytes32型に変換
+          s: signature.s as any  // Bytes32型に変換
+        });
+
       } else if (activeMode === 'cancel' && cancelSignature && cancelAuthorization) {
         // TODO：cancelAuthorization関数を呼び出して承認キャンセル実行しよう！
         // ヒント: cancelAuthorization関数は以下の引数を受け取ります：
@@ -276,9 +298,15 @@ export default function AuthorizationTab() {
         //   - nonce: キャンセル対象のnonce (cancelNonce as any)
         //   - v, r, s: 署名データ
         // 完成版は ../react-sdk/AuthorizationTab.tsx を参照してください
-
+        await cancelAuthorization({
+          authorizer: authorizerAddress as AddressString,
+          nonce: cancelNonce as any, // Bytes32型に変換
+          v: cancelSignature.v as any, // Uint8型に変換
+          r: cancelSignature.r as any, // Bytes32型に変換
+          s: cancelSignature.s as any  // Bytes32型に変換
+        });
       } else {
-        alert("署名を先に作成してください、または機能の準備ができていません");
+        alert("署名を先に作成してください");
         return;
       }
 
@@ -314,9 +342,9 @@ export default function AuthorizationTab() {
         <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-purple-100 to-blue-100 rounded-full flex items-center justify-center">
           <span className="text-2xl">🔐</span>
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">EIP-3009 Authorization (学習版)</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">EIP-3009 Authorization</h2>
         <p className="text-gray-600 max-w-3xl mx-auto">
-          EIP-3009による事前承認システム。React SDKを実装して署名ベースの転送・受取・キャンセル機能を学習してみよう。
+          EIP-3009による事前承認システム。署名ベースの転送・受取・キャンセル機能を学習できます。
         </p>
       </div>
 

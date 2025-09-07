@@ -83,7 +83,10 @@ export default function ApproveTab() {
     //   - spender: 承認先アドレス (gatewayAddress as AddressString)
     //   - value: 承認額 (amountNum - 数値をそのまま渡すだけ！)
     // 完成版は ../react-sdk/ApproveTab.tsx を参照してください
-
+    await approve({
+      spender: gatewayAddress as `0x${string}`,
+      value: amountNum // 例：10000 → 内部で 10000 * 10^18 に変換される
+    });
   };
 
   // Purchaseタブに遷移

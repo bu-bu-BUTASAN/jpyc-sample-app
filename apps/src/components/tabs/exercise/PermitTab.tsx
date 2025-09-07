@@ -116,7 +116,7 @@ export default function PermitTab() {
 
     // 🚀 STEP 4: permit関数を呼び出してPermit実行
     // ✅ 数値をそのまま渡すだけ（10^18のdecimal変換は自動）
-    
+
     // TODO：permit関数を呼び出してPermit実行しよう！
     // ヒント: permit関数は以下の引数を受け取ります：
     //   - 非同期なのでawaitを使用しよう！
@@ -126,7 +126,16 @@ export default function PermitTab() {
     //   - deadline: 期限 (BigInt(deadline) as any)
     //   - v, r, s: 署名データ (permitData.v, permitData.r, permitData.s)
     // 完成版は ../react-sdk/PermitTab.tsx を参照してください
-      
+    
+    await permit({
+      owner: address,
+      spender: gatewayAddress as AddressString,
+      value: parseFloat(value), // 例: 100 → 内部で 100 * 10^18 に変換される
+      deadline: BigInt(deadline) as any, // Uint256型に変換
+      v: permitData.v as any, // Uint8型に変換
+      r: permitData.r as any, // Bytes32型に変換
+      s: permitData.s as any  // Bytes32型に変換
+    });
   };
 
   // リセット
@@ -161,8 +170,8 @@ export default function PermitTab() {
     <div className="space-y-6">
       {/* ヘッダー */}
       <div>
-        <h2 className="text-3xl font-bold text-gray-900">✍️ EIP-2612 Permit (学習版)</h2>
-        <p className="text-gray-600 mt-2 text-lg">React SDKのusePermitフックを実装してガスレス許可設定してみよう</p>
+        <h2 className="text-3xl font-bold text-gray-900">✍️ EIP-2612 Permit (React SDK)</h2>
+        <p className="text-gray-600 mt-2 text-lg">React SDKのusePermitフックでガスレス許可設定</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

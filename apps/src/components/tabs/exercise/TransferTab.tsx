@@ -78,7 +78,10 @@ export default function TransferTab() {
     //   - to: 送信先アドレス (recipient as AddressString)
     //   - value: 送信額 (amountNum - 数値をそのまま渡すだけ！)
     // 完成版は ../react-sdk/TransferTab.tsx を参照してください
-
+    await transfer({
+      to: recipient as AddressString,
+      value: amountNum // 例: 100 → 内部で 100 * 10^18 に変換される
+    });
   };
 
   const resetForm = () => {

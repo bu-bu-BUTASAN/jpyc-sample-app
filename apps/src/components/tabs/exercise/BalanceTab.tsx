@@ -34,11 +34,9 @@ export default function BalanceTab() {
     data: balance, 
     isPending: isBalanceLoading, 
     error: balanceError 
-  } = {
-    data: null,
-    isPending: false,
-    error: null
-  };
+  } = useBalanceOf({ 
+    account: address as AddressString
+  });
 
 
   // 🚀 STEP 3: useTotalSupplyフックでJPYCの総供給量を取得
@@ -46,7 +44,7 @@ export default function BalanceTab() {
   //       nullになっているので、useTotalSupplyフックを呼び出してください
   // ヒント: useTotalSupplyフックは空のオブジェクト{}を渡します
   // 完成版は ../react-sdk/BalanceTab.tsx を参照してください
-  const totalSupplyResult = null;
+  const totalSupplyResult = useTotalSupply({});
 
   const totalSupply = totalSupplyResult?.data;
   const isTotalSupplyLoading = totalSupplyResult?.isPending || false;
